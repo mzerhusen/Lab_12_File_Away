@@ -13,7 +13,7 @@ public class SafeInput
         String retString = ""; // Set this to zero length. Loop runs until it isn't
         do
         {
-            System.out.print("\n" +prompt + ": "); // show prompt add space
+            System.out.print(prompt + ": "); // show prompt add space
             retString = pipe.nextLine();
         }
         while(retString.length() == 0);

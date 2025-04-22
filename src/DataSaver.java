@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
@@ -22,39 +22,35 @@ public class DataSaver
         ArrayList<String> records = new ArrayList<>();
         String firstName = "";
         String lastName = "";
-        String idNumber = "";
+        int idNumber;
+        String idNumberStr = "";
         String userEmail = "";
         int birthYear;
         String birthYearStr = "";
         boolean moreEntries = true;
 
-        fileName = SafeInput.getRegExString(input,"Please name your file", "^[a-zA-Z0-9]$");
+        fileName = SafeInput.getRegExString(input,"Please name your file", "^[a-zA-Z0-9]+$");
         System.out.println("\nPlease enter data below\n");
 
         do
         {
             firstName = SafeInput.getNonZeroLenString(input, "Please enter your first name");
-            records.add(firstName);
             lastName = SafeInput.getNonZeroLenString(input, "Please enter your last name");
-            records.add(lastName);
-            idNumber = SafeInput.getRegExString(input, "Please enter your ID number","[0-9]");
-            idNumber = String.format("%06d", idNumber);
-            records.add(idNumber);
-            userEmail = SafeInput.getRegExString(input, "Please enter your email", "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
-            records.add(userEmail);
+            idNumber = SafeInput.getInt(input,"Please enter your id number");
+            idNumberStr = String.format("%06d", idNumber);
+            userEmail = SafeInput.getRegExString(input, "Please enter your email", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
             birthYear = SafeInput.getRangedInt(input, "Please enter the year of your birth", 1900, CURRENT_YEAR);
             birthYearStr = String.format("%04d", birthYear);
-            records.add(birthYearStr);
+            records.add(firstName + ", " + lastName + ", " + idNumberStr + ", " + userEmail + ", " + birthYear);
             moreEntries = SafeInput.getYesNoConfirm(input, "Do you have more entries?");
         }
         while(moreEntries);
 
-
+        File workingDirectory = new File(System.getProperty("user.dir"));
+        Path file = Paths.get(workingDirectory.getPath() + "\\src\\" + fileName + ".txt");
 
         try
         {
-            selectedFile = chooser.getSelectedFile();
-            Path file = selectedFile.toPath();
             OutputStream out = new BufferedOutputStream(Files.newOutputStream(file, CREATE));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
             for(String rec : records)
