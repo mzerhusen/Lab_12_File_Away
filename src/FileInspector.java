@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.io.*;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.nio.file.Path;
 import java.nio.file.Files;
@@ -13,16 +15,20 @@ public class FileInspector
 	{
         Scanner input = new Scanner(System.in);
         JFileChooser chooser = new JFileChooser();
+        Path selectedPath = Paths.get("C:\\Users\\Michael\\IdeaProjects\\Lab_12_File_Away\\src");
         File selectedFile;
         String readData = "";
         ArrayList<String> fileData = new ArrayList<>();
+        String fileName = "";
         int lineNumber;
+        int wordCount;
+        int charCount;
 
         try
         {
             File workingDirectory = new File(System.getProperty("user.dir"));
-            Path selected
-            chooser.setCurrentDirectory(workingDirectory);
+            File subFolder = new File(workingDirectory, "src");
+            chooser.setCurrentDirectory(subFolder);
 
             if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
             {
@@ -30,16 +36,28 @@ public class FileInspector
                 Path file = selectedFile.toPath();
                     InputStream in = new BufferedInputStream(Files.newInputStream(file, CREATE));
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                fileName = selectedFile.getName();
                 lineNumber = 0;
+                wordCount = 0;
+                charCount = 0;
                 while(reader.ready())
                 {
                     readData = reader.readLine();
                     fileData.add(readData);
                     lineNumber++;
-                    System.out.printf("\nLine %4d %s ", lineNumber, readData);
+                    System.out.printf("\nLine %-2d %-20s ", lineNumber, readData);
+                    String [] dataElements;
+                    dataElements = readData.split(" ");
+                    wordCount += dataElements.length;
+                    for(int i=0; i<dataElements.length; i++)
+                    {
+                        charCount += dataElements[i].length();
+                    }
+
                 }
                 reader.close();
-                System.out.println("\nData File Read.");
+                System.out.println("\n\n\nData File Read. \nFile: " + fileName + ". \nTotal Lines " + lineNumber + ". \nTotal Words: " + wordCount + ". \nTotal Chars: " + charCount + ".");
+                System.exit(0);
             }
             else
             {
