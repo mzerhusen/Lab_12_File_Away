@@ -21,6 +21,7 @@ public class FileInspector
         try
         {
             File workingDirectory = new File(System.getProperty("user.dir"));
+            Path selected
             chooser.setCurrentDirectory(workingDirectory);
 
             if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
