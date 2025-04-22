@@ -15,7 +15,6 @@ public class FileInspector
 	{
         Scanner input = new Scanner(System.in);
         JFileChooser chooser = new JFileChooser();
-        Path selectedPath = Paths.get("C:\\Users\\Michael\\IdeaProjects\\Lab_12_File_Away\\src");
         File selectedFile;
         String readData = "";
         ArrayList<String> fileData = new ArrayList<>();
